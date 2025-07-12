@@ -8,8 +8,6 @@ variable "transform_lambda" {
   default = "transfrom"
 }
 
-
-
 variable "default_timeout" {
   type    = number
   default = 5

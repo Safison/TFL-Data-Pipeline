@@ -3,8 +3,12 @@ from datetime import datetime
 from pprint import pprint
 import boto3
 import json
+import sys
 
+sys.path.append("src/src_extract")
 tfl_api = "https://api.tfl.gov.uk/Line/Mode/tube,dlr,overground,elizabeth-line/Status"
+bucket_name = "tfl-extract-bucket"
+
 
 def fetch_tfl_status():
     tfl_status = requests.get(url=tfl_api)
@@ -12,11 +16,11 @@ def fetch_tfl_status():
     return dict_tfl_status
     
 
-def extract_tfl_status():
+def extract_tfl_status(tfl_status):
     line_list = []
     line_dict = {}
 
-    general_tfl_status = fetch_tfl_status()
+    general_tfl_status = tfl_status
     
    
     for line in general_tfl_status:
@@ -47,10 +51,11 @@ def extract_tfl_status():
    
 
 
-def upload_tfl_status_to_s3(status, bucket_name):
+def upload_tfl_status_to_s3(status, bucket_name=bucket_name):
     file_name = f'{datetime.now()}_tfl_lines_status.json'
+    file_content = json.dumps(status) + "\n"
     s3_client = boto3.client("s3")
-    s3_client.put_object(Body=status, Bucket=bucket_name, Key=file_name)
+    s3_client.put_object(Body=file_content, Bucket=bucket_name, Key=file_name)
     return file_name
    
 
