@@ -1,9 +1,16 @@
-variable "ingestion_lambda" {
+variable "extract_lambda" {
   type    = string
-  default = "ingestion"
+  default = "extract"
 }
 
-variable "transfrom_lambda" {
+variable "transform_lambda" {
   type    = string
   default = "transfrom"
+}
+
+
+
+variable "default_timeout" {
+  type    = number
+  default = 5
 }
