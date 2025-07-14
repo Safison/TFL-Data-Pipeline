@@ -1,0 +1,26 @@
+Fact table: fact_line_status
+| Column               | Type     | Description                          |
+| -------------------- | -------- | ------------------------------------ |
+| `status_id`          | INT (PK) | Auto-generated ID                    |
+| `line_id`            | VARCHAR  | Foreign Key to `dim_line`            |
+| `time_id`            | VARCHAR  | Foreign Key to `dim_time`            |
+| `status_severity`    | INT      | TfL severity score (e.g., 10 = good) |
+| `status_description` | VARCHAR  | Text like "Minor Delays"             |
+| `reason`             | TEXT     | Cause of disruption                  |
+
+Dim: dim_line
+| Column      | Type       | Description                   |
+| ----------- | ---------- | ----------------------------- |
+| `line_id`   | VARCHAR PK | ID from API (e.g., "central") |
+| `line_name` | VARCHAR    | e.g., "Central"               |
+| `mode`      | VARCHAR    | e.g., "tube", "overground"    |
+
+
+Dim: dim_time
+| Column        | Type       | Description                  |
+| ------------- | ---------- | ---------------------------- |
+| `time_id`     | VARCHAR PK | e.g., "2025-06-24T17:00:00Z" |
+| `date`        | DATE       | Date part                    |
+| `hour`        | INT        | Hour of the day              |
+| `day_of_week` | VARCHAR    | Monday, Tuesday, etc.        |
+
