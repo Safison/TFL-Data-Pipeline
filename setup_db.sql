@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS tfl_lines;
+CREATE DATABASE tfl_lines;

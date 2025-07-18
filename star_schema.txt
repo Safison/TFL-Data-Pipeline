@@ -13,7 +13,7 @@ Dim: dim_line
 | ----------- | ---------- | ----------------------------- |
 | `line_id`   | VARCHAR PK | ID from API (e.g., "central") |
 | `line_name` | VARCHAR    | e.g., "Central"               |
-| `mode`      | VARCHAR    | e.g., "tube", "overground"    |
+| `line_mode`      | VARCHAR    | e.g., "tube", "overground"    |
 
 
 Dim: dim_time
