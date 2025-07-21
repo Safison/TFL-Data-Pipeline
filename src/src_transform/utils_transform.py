@@ -3,6 +3,7 @@ from pprint import pprint
 from datetime import datetime
 import json
 import pandas as pd
+import uuid
 
 def get_s3_extract_objects_list():
     s3_client = boto3.client("s3")
@@ -38,13 +39,23 @@ def get_latest_s3_object():
 def convert_s3_obj_to_df():
     data = get_latest_s3_object()
     df = pd.DataFrame(data)
-    #print(df.head())
     return df   
     
 
 def create_fact_line_status():
-    pass
-
+    data = convert_s3_obj_to_df()
+    data_copy = data.copy()
+    
+    fact_line = data_copy.drop(columns=["modified","time_created","line_mode","line_id"])
+        
+    dim_line = create_dim_line()
+    dim_time = create_dim_time()
+    status_id = uuid.uuid4()
+    fact_line["status_id"] = status_id
+    fact_line["line_id"] = dim_line["line_id"]
+    fact_line["time_id"] = dim_time["time_id"]
+    
+    
 def create_dim_time():
     data = convert_s3_obj_to_df()
     data_copy = data.copy()
@@ -64,8 +75,7 @@ def create_dim_time():
     dim_time["time_id"] = dim_time["time_id"].astype(str)
     
     
-    print(dim_time)
-    
+    return dim_time    
 
 def create_dim_line():
     data = convert_s3_obj_to_df()
@@ -73,6 +83,7 @@ def create_dim_line():
     dim_line = data_copy.drop(columns=["modified", "status_severity","status_severity_description","time_created","reason"])
     dim_line["line_name"] = dim_line["line_id"]
     
-    
+    return dim_line
 
 
+create_fact_line_status()
