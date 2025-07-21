@@ -48,10 +48,23 @@ def create_fact_line_status():
 def create_dim_time():
     data = convert_s3_obj_to_df()
     data_copy = data.copy()
-    time_id = data_copy["modified"].head()
-    print(type(time_id))
-    #print(time_id)
     
+    dim_time = data_copy.drop(columns=["line_id","line_mode","status_severity","status_severity_description","time_created","reason"])
+    
+    dim_time = dim_time.rename(columns={"modified":"time_id"})
+    dim_time["time_id"] = pd.to_datetime(dim_time["time_id"])
+    
+    dim_time['date'] = dim_time['time_id'].dt.date
+    dim_time["date"] = pd.to_datetime(dim_time["date"])
+
+    dim_time['time'] = dim_time['time_id'].dt.time
+    dim_time["day_of_week"] = dim_time['time_id'].dt.day_name()
+    
+    
+    dim_time["time_id"] = dim_time["time_id"].astype(str)
+    
+    
+    print(dim_time)
     
 
 def create_dim_line():
@@ -60,13 +73,6 @@ def create_dim_line():
     dim_line = data_copy.drop(columns=["modified", "status_severity","status_severity_description","time_created","reason"])
     dim_line["line_name"] = dim_line["line_id"]
     
-    #print(dim_line.head())
     
 
 
-#convert_s3_obj_to_df()
-create_dim_time()
-
-
-#get_latest_s3_object()
-#'Key': '2025-07-14 10:37:53.526180_tfl_lines_status.json'
