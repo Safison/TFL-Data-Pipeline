@@ -51,6 +51,7 @@ resource "aws_s3_object" "lambda_layer" {
 }
 
 
+#added pandas layer from aws layers source to the transform lambda
 resource "aws_lambda_function" "transform_lambda" {
   function_name    = var.transform_lambda
   source_code_hash = data.archive_file.transform_lambda.output_base64sha256
