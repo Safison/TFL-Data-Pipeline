@@ -4,6 +4,6 @@ resource "aws_s3_bucket" "ingestion_bucket" {
 }
 
 resource "aws_s3_bucket" "transform_bucket" {
-  bucket_prefix = "transfrom-tfl-data-"
+  bucket = "tfl-transform-bucket"
 }
 

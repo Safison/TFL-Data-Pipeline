@@ -4,6 +4,26 @@ from datetime import datetime
 import json
 import pandas as pd
 import uuid
+import os
+
+# ingestion_bucket = os.getenv("S3_INGESTION_BUCKET")#os.environ["S3_INGESTION_BUCKET"]
+# transform_bucket = os.getenv("S3_TRANSFORM_BUCKET")
+
+ingestion_bucket = "tfl-extract-bucket"
+transform_bucket = "tfl-transform-bucket"
+
+def get_s3_client():
+    s3_client = boto3.client("s3")
+    return s3_client
+
+
+def get_latest_s3_object(s3_client, obj_key, bucket):
+    
+    s3_obj = s3_client.get_object(Bucket = ingestion_bucket, Key = obj_key)
+   
+    s3_obj_bytes = s3_obj["Body"].read()
+    s3_obj_dict = json.loads(s3_obj_bytes.decode('utf-8'))
+    return s3_obj_dict
 
 
 def convert_s3_obj_to_df(obj):
@@ -56,4 +76,16 @@ def create_dim_line(df):
     return dim_line
 
 
-create_fact_line_status()
+if __name__ == '__main__':
+    print(ingestion_bucket)
+    print(transform_bucket)
+    # api_status = fetch_tfl_status()
+    # extracted_status = extract_tfl_status(api_status)
+    # #pprint(extracted_status)
+   
+    # client = get_s3_client()
+    # s3_obj_list = get_s3_extract_objects_list(client)
+    # latest_key = fetch_latest_s3_object_key(s3_obj_list)
+    # latest_s3_status = get_latest_s3_object(client, latest_key, bucket)
+    # uploaded_status = upload_latest_status_to_s3(extracted_status, latest_s3_status)
+    # #print(uploaded_status)

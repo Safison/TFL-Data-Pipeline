@@ -33,6 +33,7 @@ data "aws_iam_policy_document" "s3_document" {
 
     resources = ["${aws_s3_bucket.ingestion_bucket.arn}",
     "${aws_s3_bucket.ingestion_bucket.arn}/*",
+        "${aws_s3_bucket.transform_bucket.arn}",
        "${aws_s3_bucket.transform_bucket.arn}/*"
     ]
   }

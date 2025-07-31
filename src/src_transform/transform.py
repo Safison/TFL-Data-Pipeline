@@ -8,5 +8,7 @@ from utils_transform import *
 
 
 def lambda_handler(event, context):
+
+    s3_key = event['data']
     
     pass

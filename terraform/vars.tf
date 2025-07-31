@@ -5,7 +5,7 @@ variable "extract_lambda" {
 
 variable "transform_lambda" {
   type    = string
-  default = "transfrom"
+  default = "transform"
 }
 
 variable "default_timeout" {

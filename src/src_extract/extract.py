@@ -20,7 +20,9 @@ def lambda_handler(event, context,bucket_name=bucket_name):
     latest_key = fetch_latest_s3_object_key(s3_obj_list)
     latest_s3_status = get_latest_s3_object(client, latest_key, bucket_name)
     uploaded_status = upload_latest_status_to_s3(extracted_status, latest_s3_status)
-    return uploaded_status
+    return {"data": [{"file_name": latest_key}]}
+    
+#return: {"data":[{file_name:"2025-07-27 21:54:43.476746_tfl_lines_status.json"}]}
      
     
     
